@@ -1,0 +1,62 @@
+# Compiled object files
+*.o
+*.obj
+
+# Compiled static libraries
+*.a
+*.lib
+
+# Compiled dynamic libraries
+*.so
+*.dll
+*.dylib
+
+# Executable files
+*.exe
+*.out
+
+# Lua bytecode
+*.luac
+
+# Dependency files
+*.d
+
+# Logs and debug files
+*.log
+*.stackdump
+
+# Generated files from build tools
+CMakeFiles/
+CMakeCache.txt
+Makefile
+build/
+*.tmp
+
+# IDE and editor files
+.vscode/
+*.swp
+*.swo
+*.~ 
+*.bak
+.idea/
+*.ncb
+*.sdf
+*.vcxproj
+*.vcxproj.filters
+*.csproj
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Lua package manager files (if applicable)
+.luarocks/
+luarocks.lock
+
+# Backup files
+*~
+*.backup
+
+# Temporary files
+tmp/
+
