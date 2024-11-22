@@ -41,22 +41,22 @@ void lua_example_stack(void) {
 
 void lua_example_call_lua_function(void) {
 	lua_State* L = luaL_newstate();
-
 	luaL_dofile(L, "./scripts/pythagoras.lua");
 	lua_getglobal(L, "pythagoras");
 	if (lua_isfunction(L, -1)) {
-		lua_pushnumber(L, 3); // 1st function argument, a
-		lua_pushnumber(L, 4); // 2nd function argument, b
+		lua_pushnumber(L, 3); // first function argument, a
+		lua_pushnumber(L, 4); // second function argument, b
 		const int NUM_ARGS = 2;
 		const int NUM_RETURNS = 1;
 		lua_pcall(L, NUM_ARGS, NUM_RETURNS, 0);
 
 		lua_Number pythagoras_result = lua_tonumber(L, -1);
 
-		printf("The pythagoras(3,4) is %f\n", (float)pythagoras_result);
+		printf("The Pythagoras(3,4) is %f\n", (float) pythagoras_result);
 	}
 	lua_close(L);
 }
+
 
 int main(int argc, char *argv[]) {
 	// lua_example_dofile();
