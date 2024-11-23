@@ -46,8 +46,8 @@ void lua_example_call_lua_function(void) {
 	};
 	lua_getglobal(L, "pythagoras");
 	if (lua_isfunction(L, -1)) {
-		lua_pushnumber(L, 3); // first function argument, a
-		lua_pushnumber(L, 4); // second function argument, b
+		lua_pushnumber(L, 3); // 1st function argument, a
+		lua_pushnumber(L, 4); // 2nd function argument, b
 		const int NUM_ARGS = 2;
 		const int NUM_RETURNS = 1;
 
@@ -61,11 +61,37 @@ void lua_example_call_lua_function(void) {
 	lua_close(L);
 }
 
+int native_pythagoras(lua_State* L) {
+	lua_Number b = lua_tonumber(L, -1); // get the last added parameter from the stack, b
+	lua_Number a = lua_tonumber(L, -2); // get the first added parameter from the stack, a
+	lua_Number result = (a * a) + (b * b);
+	lua_pushnumber(L, result);
+	return 1; // returns how many values the function returning as a result to the stack
+}
+
+void lua_example_call_c_function(void) {
+	lua_State* L = luaL_newstate();
+	lua_pushcfunction(L, native_pythagoras);
+	lua_setglobal(L, "native_pythagoras");
+	luaL_dofile(L, "./scripts/pythagoras-native.lua");
+	lua_getglobal(L, "pythagoras");
+	if (lua_isfunction(L, -1)) {
+		lua_pushnumber(L, 3); // 1st function argument, a
+		lua_pushnumber(L, 4); // 2nd function argument, b
+		const int NUM_ARGS = 2;
+		const int NUM_RETURNS = 1;
+		lua_pcall(L, NUM_ARGS, NUM_RETURNS, 0);
+		lua_Number pythagoras_result = lua_tonumber(L, -1);
+		printf("Native Pythagoras(3,4) = %f\n", (float) pythagoras_result);
+	}
+	lua_close(L);
+}
 
 int main(int argc, char *argv[]) {
 	// lua_example_dofile();
 	// lua_example_getvar();
 	// lua_example_stack();
-	lua_example_call_lua_function();
+	// lua_example_call_lua_function();
+	lua_example_call_c_function();
 	return 0;
 }
