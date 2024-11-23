@@ -1,4 +1,6 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_rect.h>
+#include <SDL2/SDL_render.h>
 
 // #include "../lib/lua/src/lua.h"
 // #include "../lib/lua/src/lualib.h"
@@ -13,6 +15,13 @@
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 int is_running = FALSE;
+
+struct player {
+	float x;
+	float y;
+	float width;
+	float height;
+} player;
 
 int initialize_window(void) {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -55,12 +64,27 @@ void process_input(void) {
 	}
 }
 
+void setup(void) {
+	player.x = 20;
+	player.y = 20;
+	player.width = 10;
+	player.height = 10;
+}
+
 void update(void) {
 	// TODO:
 }
 
 void render(void) {
-	// TODO:
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_RenderClear(renderer);
+
+	// draw the player at position x, y
+	SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+	SDL_Rect player_rect = {player.x, player.y, player.width, player.height};
+	SDL_RenderFillRect(renderer, &player_rect);
+	
+	SDL_RenderPresent(renderer);
 }
 
 void destroy_window(void) {
@@ -71,6 +95,8 @@ void destroy_window(void) {
 
 int main(int argc, char *argv[]) {
 	is_running = initialize_window();
+
+	setup();
 
 	while (is_running) {
 		process_input();
