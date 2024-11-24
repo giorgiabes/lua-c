@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_timer.h>
 
 // #include "../lib/lua/src/lua.h"
 // #include "../lib/lua/src/lualib.h"
@@ -11,10 +12,13 @@
 #define TRUE 1
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
+#define FPS 30
+#define FRAME_TIME_LENGTH (1000 / FPS)
 
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 int is_running = FALSE;
+int last_frame_time;
 
 struct player {
 	float x;
@@ -72,16 +76,24 @@ void setup(void) {
 }
 
 void update(void) {
-	// TODO:
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), last_frame_time + FRAME_TIME_LENGTH));
+	last_frame_time = SDL_GetTicks();
+	player.x += 0.5;
+	player.y += 0.5;
 }
 
 void render(void) {
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
 	// draw the player at position x, y
-	SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-	SDL_Rect player_rect = {player.x, player.y, player.width, player.height};
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_Rect player_rect = {
+		(int)player.x,
+		(int)player.y, 
+		(int)player.width, 
+		(int)player.height
+	};
 	SDL_RenderFillRect(renderer, &player_rect);
 	
 	SDL_RenderPresent(renderer);
